@@ -1,0 +1,87 @@
+from geoalchemy2 import Geometry
+from sqlalchemy import BigInteger, Column, Float, Integer, Text
+from sqlalchemy.dialects.postgresql import HSTORE
+
+from model.base import Base
+
+
+class PlanetOsmLine(Base):
+    __tablename__ = "planet_osm_line"
+
+    osm_id = Column(BigInteger, primary_key=True)
+    access = Column(Text)
+    addr_housename = Column("addr:housename", Text)
+    addr_housenumber = Column("addr:housenumber", Text)
+    addr_interpolation = Column("addr:interpolation", Text)
+    admin_level = Column(Text)
+    aerialway = Column(Text)
+    aeroway = Column(Text)
+    amenity = Column(Text)
+    area = Column(Text)
+    barrier = Column(Text)
+    bicycle = Column(Text)
+    brand = Column(Text)
+    bridge = Column(Text)
+    boundary = Column(Text)
+    building = Column(Text)
+    construction = Column(Text)
+    covered = Column(Text)
+    culvert = Column(Text)
+    cutting = Column(Text)
+    denomination = Column(Text)
+    disused = Column(Text)
+    embankment = Column(Text)
+    foot = Column(Text)
+    generator_source = Column("generator:source", Text)
+    harbour = Column(Text)
+    highway = Column(Text)
+    historic = Column(Text)
+    horse = Column(Text)
+    intermittent = Column(Text)
+    junction = Column(Text)
+    landuse = Column(Text)
+    layer = Column(Text)
+    leisure = Column(Text)
+    lock = Column(Text)
+    man_made = Column(Text)
+    military = Column(Text)
+    motorcar = Column(Text)
+    name = Column(Text)
+    natural = Column(Text)
+    office = Column(Text)
+    oneway = Column(Text)
+    operator = Column(Text)
+    place = Column(Text)
+    population = Column(Text)
+    power = Column(Text)
+    power_source = Column(Text)
+    public_transport = Column(Text)
+    railway = Column(Text)
+    ref = Column(Text)
+    religion = Column(Text)
+    route = Column(Text)
+    service = Column(Text)
+    shop = Column(Text)
+    sport = Column(Text)
+    surface = Column(Text)
+    toll = Column(Text)
+    tourism = Column(Text)
+    tower_type = Column("tower:type", Text)
+    tracktype = Column(Text)
+    tunnel = Column(Text)
+    water = Column(Text)
+    waterway = Column(Text)
+    wetland = Column(Text)
+    width = Column(Text)
+    wood = Column(Text)
+    z_order = Column(Integer)
+    way_area = Column(Float)
+    tags = Column(HSTORE)
+
+    way = Column(Geometry("LineString", srid=3857))
+
+    def __repr__(self):
+        return (
+            f"<PlanetOsmLine(osm_id={self.osm_id}, "
+            f"name={self.name}, way={self.way})>"
+        )

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #search-container {
+            margin-bottom: 20px;
+        }
+        #street-results {
+            list-style-type: none;
+            padding: 0;
+        }
+        #street-results li {
+            background: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        #no-results {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>Street Finder</h1>
+    <div id="search-container">
+        <input
+            type="text"
+            id="search-input"
+            placeholder="Начните вводить название улицы..."
+            oninput="fetchStreets()"
+        />
+    </div>
+    <ul id="street-results"></ul>
+    <p id="no-results" style="display: none;">Нет результатов</p>
+
+    <script>
+        const API_URL = "http://localhost:8000/api/v1/street/find/";
+
+        async function fetchStreets() {
+            const searchInput = document.getElementById("search-input");
+            const query = searchInput.value.trim();
+            const resultsContainer = document.getElementById("street-results");
+            const noResultsMessage = document.getElementById("no-results");
+
+            if (query.length < 3) {
+                resultsContainer.innerHTML = "";
+                noResultsMessage.style.display = "none";
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ street: query }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка при запросе к API");
+                }
+                const streets = await response.json();
+                resultsContainer.innerHTML = "";
+
+                if (streets.length > 0) {
+                    streets.forEach((street) => {
+                        const li = document.createElement("li");
+                        li.textContent = street;
+                        resultsContainer.appendChild(li);
+                    });
+                    noResultsMessage.style.display = "none";
+                } else {
+                    noResultsMessage.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Ошибка:", error);
+                alert("Произошла ошибка при загрузке данных.");
+            }
+        }
+    </script>
+</body>
+</html>
